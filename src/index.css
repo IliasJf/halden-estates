@@ -1,0 +1,109 @@
+@import 'tailwindcss';
+
+/* Brand tokens: available as Tailwind utilities, e.g. bg-sand, text-ink, font-display */
+@theme {
+  --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Fraunces', ui-serif, Georgia, serif;
+
+  --color-sand: #f6f1e9;
+  --color-paper: #fcfaf6;
+  --color-stone: #e4dacb;
+  --color-ink: #16211d;
+  --color-pine: #23392f;
+  --color-pine-dark: #182a22;
+  --color-muted: #57625c;
+  --color-brass: #d4b06f;
+  --color-brass-dark: #7a5c26;
+  --color-danger: #a3312a;
+  --color-success: #2f6b4a;
+}
+
+/* Shared button shape; colour variants (.btn-primary etc.) build on it below */
+@utility btn {
+  @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-6 text-sm font-semibold transition-colors duration-200;
+}
+
+@layer base {
+  :root {
+    --focus-ring: var(--color-brass-dark);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-sand font-sans text-ink antialiased;
+    overflow-x: hidden;
+  }
+
+  /* Dark sections swap the focus ring to a colour that stays visible on them */
+  [data-surface='dark'] {
+    --focus-ring: var(--color-brass);
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display;
+    font-optical-sizing: auto;
+    text-wrap: balance;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .eyebrow {
+    @apply text-xs font-semibold tracking-[0.2em] text-brass-dark uppercase;
+  }
+
+  .btn-primary {
+    @apply btn bg-pine text-sand hover:bg-pine-dark;
+  }
+
+  .btn-secondary {
+    @apply btn border border-ink/20 text-ink hover:border-ink hover:bg-ink hover:text-sand;
+  }
+
+  .btn-light {
+    @apply btn bg-sand text-ink hover:bg-white;
+  }
+
+  .field-label {
+    @apply mb-1.5 block text-sm font-semibold text-ink;
+  }
+
+  .field-input {
+    @apply block min-h-11 w-full rounded-xl border border-stone bg-paper px-4 py-2.5 text-base text-ink transition-colors placeholder:text-muted/70 hover:border-muted/60 focus:border-pine;
+  }
+
+  .field-input[aria-invalid='true'] {
+    @apply border-danger;
+  }
+
+  .field-error {
+    @apply mt-1.5 flex items-center gap-1.5 text-sm font-medium text-danger;
+  }
+}
