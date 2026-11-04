@@ -131,3 +131,7 @@ To receive real leads, replace the body of `saveEnquiry()` with a `fetch()` call
 ## Credits
 
 Photography from [Unsplash](https://unsplash.com). Fonts: [Fraunces](https://fonts.google.com/specimen/Fraunces) and [Manrope](https://fonts.google.com/specimen/Manrope) via Google Fonts. Halden Estates, its staff, listings and contact details are fictional.
+
+## License
+
+[MIT](LICENSE)
