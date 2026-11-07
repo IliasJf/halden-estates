@@ -1,12 +1,20 @@
 import { BED_SELECT_OPTIONS, LOCATION_OPTIONS, PRICE_OPTIONS, TYPE_OPTIONS } from '../utils/filters'
+import type { FilterKey, Filters as FilterValues } from '../types'
 import SelectField from './SelectField'
+
+interface FiltersProps {
+  values: FilterValues
+  onChange: (key: FilterKey, value: string) => void
+  onReset: () => void
+  activeCount: number
+}
 
 /**
  * Controlled filter panel for the Properties page.
  * `values` is the current filter object; `onChange(key, value)` updates one filter.
  */
-export default function Filters({ values, onChange, onReset, activeCount }) {
-  const set = (key) => (value) => onChange(key, value)
+export default function Filters({ values, onChange, onReset, activeCount }: FiltersProps) {
+  const set = (key: FilterKey) => (value: string) => onChange(key, value)
 
   // Hide price options that would make the range impossible (min above max).
   const minOptions = PRICE_OPTIONS.filter((option) => !values.maxPrice || Number(option.value) < Number(values.maxPrice))

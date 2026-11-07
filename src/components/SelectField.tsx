@@ -1,4 +1,16 @@
+import type { Option } from '../types'
 import Icon from './Icon'
+
+interface SelectFieldProps {
+  id: string
+  label: string
+  value: string
+  onChange: (value: string) => void
+  options: Option[]
+  placeholder?: string
+  hideLabel?: boolean
+  className?: string
+}
 
 /**
  * A labelled native <select>. Native selects keep keyboard and screen reader
@@ -6,7 +18,7 @@ import Icon from './Icon'
  *
  * options: array of { value, label }
  */
-export default function SelectField({ id, label, value, onChange, options, placeholder, hideLabel = false, className = '' }) {
+export default function SelectField({ id, label, value, onChange, options, placeholder, hideLabel = false, className = '' }: SelectFieldProps) {
   return (
     <div className={className}>
       <label htmlFor={id} className={hideLabel ? 'sr-only' : 'field-label'}>

@@ -1,18 +1,19 @@
-import { useState } from 'react'
+import { useState, type KeyboardEvent } from 'react'
+import type { PropertyImage } from '../types'
 import { imageAt, srcSetFor } from '../utils/image'
 import Icon from './Icon'
 
 const arrowButton =
   'absolute top-1/2 inline-flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-sand/90 text-ink shadow-md transition-colors hover:bg-white'
 
-export default function Gallery({ images, title }) {
+export default function Gallery({ images, title }: { images: PropertyImage[]; title: string }) {
   const [index, setIndex] = useState(0)
   const count = images.length
   const current = images[index]
 
-  const go = (step) => setIndex((i) => (i + step + count) % count)
+  const go = (step: number) => setIndex((i) => (i + step + count) % count)
 
-  const handleKeyDown = (event) => {
+  const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
     if (event.key === 'ArrowRight') go(1)
     if (event.key === 'ArrowLeft') go(-1)
   }

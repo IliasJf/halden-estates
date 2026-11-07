@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-export default function Logo({ tone = 'dark', onClick }) {
+export default function Logo({ tone = 'dark', onClick }: { tone?: 'dark' | 'light'; onClick?: () => void }) {
   const roof = tone === 'dark' ? 'text-brass-dark' : 'text-brass'
   const text = tone === 'dark' ? 'text-ink' : 'text-sand'
 

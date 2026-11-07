@@ -10,7 +10,7 @@ export default function Contact() {
   const [searchParams] = useSearchParams()
 
   // Links such as /contact?topic=selling preselect the "How can we help?" field.
-  const requestedTopic = searchParams.get('topic')
+  const requestedTopic = searchParams.get('topic') ?? ''
   const defaultTopic = TOPIC_OPTIONS.some((option) => option.value === requestedTopic) ? requestedTopic : 'buying'
 
   return (

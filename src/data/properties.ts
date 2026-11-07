@@ -9,19 +9,22 @@
  * - The first image is used on cards; every image needs alt text.
  */
 
-const photo = (id) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=1600&q=80`
+import type { Property } from '../types'
 
-export const LOCATIONS = ['Lisbon', 'Cascais', 'Sintra', 'Comporta', 'Porto', 'Algarve']
+const photo = (id: string) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=1600&q=80`
 
-export const PROPERTY_TYPES = ['Villa', 'House', 'Apartment', 'Penthouse', 'Townhouse']
+export const LOCATIONS = ['Lisbon', 'Cascais', 'Sintra', 'Comporta', 'Porto', 'Algarve'] as const
 
-export const properties = [
+export const PROPERTY_TYPES = ['Villa', 'House', 'Apartment', 'Penthouse', 'Townhouse'] as const
+
+export const properties: Property[] = [
   {
     id: 1,
     slug: 'villa-mare-quinta-da-marinha',
     title: 'Villa Maré',
     location: 'Cascais',
     neighbourhood: 'Quinta da Marinha',
+    coords: [38.7155, -9.4560],
     type: 'Villa',
     price: 3950000,
     beds: 5,
@@ -50,6 +53,7 @@ export const properties = [
     title: 'Príncipe Real Penthouse',
     location: 'Lisbon',
     neighbourhood: 'Príncipe Real',
+    coords: [38.7165, -9.1490],
     type: 'Penthouse',
     price: 2450000,
     beds: 3,
@@ -77,6 +81,7 @@ export const properties = [
     title: 'Casa do Pinhal',
     location: 'Comporta',
     neighbourhood: 'Carvalhal',
+    coords: [38.3330, -8.7700],
     type: 'Villa',
     price: 2180000,
     beds: 4,
@@ -104,6 +109,7 @@ export const properties = [
     title: 'Quinta da Névoa',
     location: 'Sintra',
     neighbourhood: 'São Pedro de Penaferrim',
+    coords: [38.7860, -9.3720],
     type: 'House',
     price: 1650000,
     beds: 5,
@@ -131,6 +137,7 @@ export const properties = [
     title: 'Foz do Douro Apartment',
     location: 'Porto',
     neighbourhood: 'Foz do Douro',
+    coords: [41.1530, -8.6750],
     type: 'Apartment',
     price: 780000,
     beds: 2,
@@ -158,6 +165,7 @@ export const properties = [
     title: 'Villa Falésia',
     location: 'Algarve',
     neighbourhood: 'Lagos',
+    coords: [37.0890, -8.6900],
     type: 'Villa',
     price: 2950000,
     beds: 4,
@@ -185,6 +193,7 @@ export const properties = [
     title: 'Chiado Apartment',
     location: 'Lisbon',
     neighbourhood: 'Chiado',
+    coords: [38.7105, -9.1420],
     type: 'Apartment',
     price: 965000,
     beds: 2,
@@ -212,6 +221,7 @@ export const properties = [
     title: 'Estoril Townhouse',
     location: 'Cascais',
     neighbourhood: 'Monte Estoril',
+    coords: [38.7050, -9.4050],
     type: 'Townhouse',
     price: 1290000,
     beds: 4,
@@ -239,6 +249,7 @@ export const properties = [
     title: 'Boavista Penthouse',
     location: 'Porto',
     neighbourhood: 'Boavista',
+    coords: [41.1590, -8.6300],
     type: 'Penthouse',
     price: 1380000,
     beds: 3,
@@ -266,6 +277,7 @@ export const properties = [
     title: 'Campo de Ourique Family Apartment',
     location: 'Lisbon',
     neighbourhood: 'Campo de Ourique',
+    coords: [38.7180, -9.1660],
     type: 'Apartment',
     price: 640000,
     beds: 3,
@@ -292,6 +304,7 @@ export const properties = [
     title: 'Colares Country House',
     location: 'Sintra',
     neighbourhood: 'Colares',
+    coords: [38.7990, -9.4470],
     type: 'House',
     price: 1120000,
     beds: 4,
@@ -319,6 +332,7 @@ export const properties = [
     title: 'Carvoeiro Modern Villa',
     location: 'Algarve',
     neighbourhood: 'Carvoeiro',
+    coords: [37.0980, -8.4700],
     type: 'Villa',
     price: 1450000,
     beds: 3,
@@ -342,6 +356,6 @@ export const properties = [
   },
 ]
 
-export function getPropertyBySlug(slug) {
+export function getPropertyBySlug(slug: string | undefined): Property | undefined {
   return properties.find((property) => property.slug === slug)
 }

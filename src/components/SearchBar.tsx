@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, type FormEvent } from 'react'
+import type { FilterKey } from '../types'
 import { useNavigate } from 'react-router-dom'
 import {
   BED_SELECT_OPTIONS,
@@ -19,9 +20,9 @@ export default function SearchBar() {
   const navigate = useNavigate()
   const [filters, setFilters] = useState(EMPTY_FILTERS)
 
-  const update = (key) => (value) => setFilters((current) => ({ ...current, [key]: value }))
+  const update = (key: FilterKey) => (value: string) => setFilters((current) => ({ ...current, [key]: value }))
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const query = filtersToParams(filters).toString()
     navigate(query ? `/properties?${query}` : '/properties')

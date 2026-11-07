@@ -4,18 +4,33 @@
  * form service (Formspree, Netlify Forms, etc.) to receive real leads.
  */
 
+export interface Enquiry {
+  name: string
+  email: string
+  phone: string
+  topic: string
+  message: string
+  consent: boolean
+  property: { id: number; title: string; slug: string } | null
+}
+
+export interface EnquiryRecord extends Enquiry {
+  id: string
+  submittedAt: string
+}
+
 const STORAGE_KEY = 'halden-estates:enquiries'
 
-export function getEnquiries() {
+export function getEnquiries(): EnquiryRecord[] {
   try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY)) ?? []
+    return JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]') ?? []
   } catch {
     return []
   }
 }
 
-export async function saveEnquiry(enquiry) {
-  const record = { ...enquiry, id: crypto.randomUUID(), submittedAt: new Date().toISOString() }
+export async function saveEnquiry(enquiry: Enquiry): Promise<EnquiryRecord> {
+  const record: EnquiryRecord = { ...enquiry, id: crypto.randomUUID(), submittedAt: new Date().toISOString() }
 
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify([...getEnquiries(), record]))

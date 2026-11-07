@@ -5,6 +5,7 @@ import Contact from './pages/Contact'
 import Home from './pages/Home'
 import NotFound from './pages/NotFound'
 import Properties from './pages/Properties'
+import Saved from './pages/Saved'
 import PropertyDetail from './pages/PropertyDetail'
 import Services from './pages/Services'
 
@@ -15,6 +16,7 @@ export default function App() {
         <Route index element={<Home />} />
         <Route path="properties" element={<Properties />} />
         <Route path="properties/:slug" element={<PropertyDetail />} />
+        <Route path="saved" element={<Saved />} />
         <Route path="services" element={<Services />} />
         <Route path="about" element={<About />} />
         <Route path="contact" element={<Contact />} />

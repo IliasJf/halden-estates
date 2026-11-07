@@ -1,11 +1,23 @@
+import type { InputHTMLAttributes, TextareaHTMLAttributes } from 'react'
 import Icon from './Icon'
+
+type NativeProps = InputHTMLAttributes<HTMLInputElement> & TextareaHTMLAttributes<HTMLTextAreaElement>
+
+interface FormFieldProps extends Omit<NativeProps, 'id'> {
+  id: string
+  label: string
+  error?: string
+  optional?: boolean
+  multiline?: boolean
+  hint?: string
+}
 
 /**
  * Label + input/textarea + inline error, wired together for screen readers
  * with aria-invalid and aria-describedby.
  */
-export default function FormField({ id, label, error, optional = false, multiline = false, hint, ...inputProps }) {
-  const Control = multiline ? 'textarea' : 'input'
+export default function FormField({ id, label, error, optional = false, multiline = false, hint, ...inputProps }: FormFieldProps) {
+  const Control: 'textarea' | 'input' = multiline ? 'textarea' : 'input'
   const errorId = `${id}-error`
   const hintId = `${id}-hint`
   const describedBy = [hint && hintId, error && errorId].filter(Boolean).join(' ') || undefined

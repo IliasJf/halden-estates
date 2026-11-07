@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { BRAND } from '../data/site'
 
-export default function useDocumentTitle(title) {
+export default function useDocumentTitle(title?: string) {
   useEffect(() => {
     document.title = title ? `${title} · ${BRAND.name}` : `${BRAND.name} · ${BRAND.tagline}`
   }, [title])

@@ -1,5 +1,7 @@
+import type { ReactNode } from 'react'
+
 /** The title band at the top of inner pages (Properties, About, Services, Contact). */
-export default function PageHeader({ eyebrow, title, intro, children }) {
+export default function PageHeader({ eyebrow, title, intro, children }: { eyebrow?: string; title: ReactNode; intro?: ReactNode; children?: ReactNode }) {
   return (
     <section className="border-b border-stone/70 bg-paper">
       <div className="container-page py-14 sm:py-20">

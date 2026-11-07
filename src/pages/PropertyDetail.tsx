@@ -3,13 +3,16 @@ import EnquiryForm from '../components/EnquiryForm'
 import Gallery from '../components/Gallery'
 import Icon from '../components/Icon'
 import PropertyCard from '../components/PropertyCard'
+import SaveButton from '../components/SaveButton'
 import SectionHeading from '../components/SectionHeading'
 import { getPropertyBySlug, properties } from '../data/properties'
 import useDocumentTitle from '../hooks/useDocumentTitle'
 import { formatArea, formatPrice } from '../utils/format'
 import NotFound from './NotFound'
+import type { IconName } from '../components/Icon'
+import type { Property } from '../types'
 
-function getSimilar(property, limit = 3) {
+function getSimilar(property: Property, limit = 3): Property[] {
   return properties
     .filter((other) => other.id !== property.id)
     .map((other) => ({
@@ -30,14 +33,14 @@ export default function PropertyDetail() {
     return <NotFound title="We couldn’t find that property" message="It may have been sold or the link may be out of date." />
   }
 
-  const facts = [
+  const facts: { icon: IconName; label: string; value: string | number }[] = [
     { icon: 'bed', label: 'Bedrooms', value: property.beds },
     { icon: 'bath', label: 'Bathrooms', value: property.baths },
     { icon: 'area', label: 'Living area', value: formatArea(property.size) },
-    property.plot && { icon: 'plot', label: 'Plot', value: formatArea(property.plot) },
+    ...(property.plot ? [{ icon: 'plot' as const, label: 'Plot', value: formatArea(property.plot) }] : []),
     { icon: 'home', label: 'Type', value: property.type },
     { icon: 'calendar', label: 'Year built', value: property.yearBuilt },
-  ].filter(Boolean)
+  ]
 
   return (
     <>
@@ -70,9 +73,13 @@ export default function PropertyDetail() {
             </p>
             <h1 className="mt-2 text-4xl leading-tight font-normal text-ink sm:text-5xl">{property.title}</h1>
           </div>
-          <div className="md:text-right">
-            <p className="text-sm text-muted">Asking price</p>
-            <p className="font-display text-3xl text-pine sm:text-4xl">{formatPrice(property.price)}</p>
+          <div className="flex items-end justify-between gap-6 md:justify-end">
+            <div className="md:text-right">
+              <p className="text-sm text-muted">Asking price</p>
+              <p className="font-display text-3xl text-pine sm:text-4xl">{formatPrice(property.price)}</p>
+              <p className="mt-1 text-sm text-muted">{formatPrice(Math.round(property.price / property.size))} per m²</p>
+            </div>
+            <SaveButton property={property} variant="inline" className="shrink-0" />
           </div>
         </header>
 

@@ -2,6 +2,8 @@
  * Site-wide content: brand details, navigation and copy used on several pages.
  */
 
+import type { IconName } from '../components/Icon'
+
 export const BRAND = {
   name: 'Halden Estates',
   tagline: 'Homes with a sense of place',
@@ -29,7 +31,7 @@ export const STATS = [
   { value: '96%', label: 'Of clients would recommend us' },
 ]
 
-export const SERVICES = [
+export const SERVICES: { icon: IconName; title: string; summary: string; points: string[] }[] = [
   {
     icon: 'home',
     title: 'Buying',

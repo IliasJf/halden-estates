@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { NAV_LINKS } from '../data/site'
+import useSaved from '../hooks/useSaved'
 import Icon from './Icon'
 import Logo from './Logo'
 
-const linkClass = ({ isActive }) =>
+const linkClass = ({ isActive }: { isActive: boolean }) =>
   `relative py-2 text-sm font-medium transition-colors hover:text-ink ${
     isActive ? 'text-ink after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:bg-brass-dark' : 'text-muted'
   }`
@@ -12,6 +13,22 @@ const linkClass = ({ isActive }) =>
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const { pathname } = useLocation()
+  const savedCount = useSaved().length
+
+  const savedLink = (
+    <Link
+      to="/saved"
+      className={`relative inline-flex size-11 items-center justify-center rounded-full hover:bg-stone/60 ${pathname === '/saved' ? 'text-danger' : 'text-ink'}`}
+    >
+      <Icon name="heart" className="size-5" fill={savedCount ? 'currentColor' : 'none'} strokeWidth={1.8} />
+      <span className="sr-only">Saved homes ({savedCount})</span>
+      {savedCount > 0 && (
+        <span aria-hidden="true" className="absolute top-1 right-0.5 min-w-5 rounded-full bg-pine px-1.5 text-center text-[0.7rem] leading-5 font-semibold text-sand">
+          {savedCount}
+        </span>
+      )}
+    </Link>
+  )
 
   // Close the mobile menu whenever the route changes.
   useEffect(() => setIsOpen(false), [pathname])
@@ -19,7 +36,7 @@ export default function Navbar() {
   // While the menu is open: lock page scroll and let Escape close it.
   useEffect(() => {
     if (!isOpen) return
-    const onKeyDown = (event) => event.key === 'Escape' && setIsOpen(false)
+    const onKeyDown = (event: KeyboardEvent) => event.key === 'Escape' && setIsOpen(false)
     document.body.style.overflow = 'hidden'
     window.addEventListener('keydown', onKeyDown)
     return () => {
@@ -43,11 +60,13 @@ export default function Navbar() {
           ))}
         </ul>
 
-        <Link to="/contact" className="btn-primary hidden md:inline-flex">
-          Book a valuation
-        </Link>
+        <div className="flex items-center gap-2">
+          {savedLink}
+          <Link to="/contact" className="btn-primary hidden md:inline-flex">
+            Book a valuation
+          </Link>
 
-        <button
+          <button
           type="button"
           className="-mr-2 inline-flex size-11 items-center justify-center rounded-full text-ink hover:bg-stone/60 md:hidden"
           aria-expanded={isOpen}
@@ -56,7 +75,8 @@ export default function Navbar() {
         >
           <Icon name={isOpen ? 'close' : 'menu'} className="size-6" />
           <span className="sr-only">{isOpen ? 'Close menu' : 'Open menu'}</span>
-        </button>
+          </button>
+        </div>
       </nav>
 
       {isOpen && (

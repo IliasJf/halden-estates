@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type ChangeEvent, type FocusEvent, type FormEvent } from 'react'
+import type { Property } from '../types'
 import { saveEnquiry } from '../utils/enquiries'
 import FormField from './FormField'
 import Icon from './Icon'
@@ -15,8 +16,20 @@ export const TOPIC_OPTIONS = [
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
 const PHONE_PATTERN = /^\+?[\d\s()-]{7,20}$/
 
-function validate(values) {
-  const errors = {}
+interface Values {
+  name: string
+  email: string
+  phone: string
+  topic: string
+  message: string
+  consent: boolean
+}
+
+type Field = 'name' | 'email' | 'phone' | 'message' | 'consent'
+type Errors = Partial<Record<Field, string>>
+
+function validate(values: Values): Errors {
+  const errors: Errors = {}
   if (values.name.trim().length < 2) errors.name = 'Please enter your full name.'
   if (!values.email.trim()) errors.email = 'Please enter your email address.'
   else if (!EMAIL_PATTERN.test(values.email.trim())) errors.email = 'Please enter a valid email, like name@example.com.'
@@ -28,14 +41,21 @@ function validate(values) {
 }
 
 // Order matters: on submit, focus moves to the first field with an error.
-const FIELD_ORDER = ['name', 'email', 'phone', 'message', 'consent']
+const FIELD_ORDER: Field[] = ['name', 'email', 'phone', 'message', 'consent']
+
+interface EnquiryFormProps {
+  property?: Property
+  showTopic?: boolean
+  defaultTopic?: string
+  idPrefix?: string
+}
 
 /**
  * Lead-generation form used on property pages and the Contact page.
  * Pass `property` to tie the enquiry to a listing, or `showTopic` for a general enquiry.
  */
-export default function EnquiryForm({ property, showTopic = false, defaultTopic = 'buying', idPrefix = 'enquiry' }) {
-  const initialValues = {
+export default function EnquiryForm({ property, showTopic = false, defaultTopic = 'buying', idPrefix = 'enquiry' }: EnquiryFormProps) {
+  const initialValues: Values = {
     name: '',
     email: '',
     phone: '',
@@ -45,37 +65,38 @@ export default function EnquiryForm({ property, showTopic = false, defaultTopic 
   }
 
   const [values, setValues] = useState(initialValues)
-  const [touched, setTouched] = useState({})
-  const [status, setStatus] = useState('idle') // idle | submitting | success
-  const formRef = useRef(null)
-  const successRef = useRef(null)
+  const [touched, setTouched] = useState<Partial<Record<Field, boolean>>>({})
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success'>('idle')
+  const formRef = useRef<HTMLFormElement>(null)
+  const successRef = useRef<HTMLHeadingElement>(null)
 
   const errors = validate(values)
-  const visibleError = (field) => (touched[field] ? errors[field] : undefined)
-  const fieldId = (field) => `${idPrefix}-${field}`
+  const visibleError = (field: Field) => (touched[field] ? errors[field] : undefined)
+  const fieldId = (field: Field | 'topic') => `${idPrefix}-${field}`
 
   useEffect(() => {
     if (status === 'success') successRef.current?.focus()
   }, [status])
 
-  const handleChange = (event) => {
-    const { name, type, value, checked } = event.target
+  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, type, value } = event.target
+    const checked = (event.target as HTMLInputElement).checked
     const key = name.replace(`${idPrefix}-`, '')
     setValues((current) => ({ ...current, [key]: type === 'checkbox' ? checked : value }))
   }
 
-  const handleBlur = (event) => {
+  const handleBlur = (event: FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const key = event.target.name.replace(`${idPrefix}-`, '')
     setTouched((current) => ({ ...current, [key]: true }))
   }
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setTouched(Object.fromEntries(FIELD_ORDER.map((field) => [field, true])))
 
     const firstInvalid = FIELD_ORDER.find((field) => errors[field])
     if (firstInvalid) {
-      formRef.current.querySelector(`#${fieldId(firstInvalid)}`)?.focus()
+      formRef.current?.querySelector<HTMLElement>(`#${fieldId(firstInvalid)}`)?.focus()
       return
     }
 
@@ -128,7 +149,7 @@ export default function EnquiryForm({ property, showTopic = false, defaultTopic 
           id={fieldId('topic')}
           label="How can we help?"
           value={values.topic}
-          onChange={(topic) => setValues((current) => ({ ...current, topic }))}
+          onChange={(topic: string) => setValues((current) => ({ ...current, topic }))}
           options={TOPIC_OPTIONS}
         />
       )}

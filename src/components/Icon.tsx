@@ -2,6 +2,8 @@
  * A small set of line icons, drawn on a 24×24 grid.
  * Icons are decorative by default (aria-hidden); pair them with visible or sr-only text.
  */
+import type { SVGProps } from 'react'
+
 const PATHS = {
   menu: 'M4 7h16M4 12h16M4 17h16',
   close: 'M6 6l12 12M18 6L6 18',
@@ -28,9 +30,19 @@ const PATHS = {
   key: 'M15 14a5 5 0 1 0 0-10 5 5 0 0 0 0 10zM11.5 12.5L3 21M6 18l2.5 2.5M8.5 15.5L11 18',
   globe: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM3 12h18M12 3c2.8 3.2 2.8 14.8 0 18M12 3c-2.8 3.2-2.8 14.8 0 18',
   shield: 'M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3zM8.5 12l2.5 2.5 4.5-5',
+  heart: 'M12 20.5s-7.5-4.6-9.4-9.6C1.5 7.8 3.6 4.5 7 4.5c2.1 0 3.9 1.2 5 3 1.1-1.8 2.9-3 5-3 3.4 0 5.5 3.3 4.4 6.4-1.9 5-9.4 9.6-9.4 9.6z',
+  map: 'M9 4L3 6.5v13.5l6-2.5 6 2.5 6-2.5V4l-6 2.5L9 4zM9 4v13.5M15 6.5V20',
+  grid: 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z',
+  scale: 'M12 4v16M5 20h14M4 8h16M7 8l-3 7a3 3 0 0 0 6 0L7 8zM17 8l-3 7a3 3 0 0 0 6 0l-3-7z',
+} as const
+
+export type IconName = keyof typeof PATHS
+
+interface IconProps extends Omit<SVGProps<SVGSVGElement>, 'name'> {
+  name: IconName
 }
 
-export default function Icon({ name, className = 'size-5', strokeWidth = 1.6, ...props }) {
+export default function Icon({ name, className = 'size-5', strokeWidth = 1.6, ...props }: IconProps) {
   return (
     <svg
       viewBox="0 0 24 24"
