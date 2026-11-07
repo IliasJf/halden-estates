@@ -4,6 +4,8 @@ A responsive real estate website for a fictional Portuguese agency, built with *
 
 It has six pages (Home, Properties, Property detail, About, Services, Contact), property search and filtering stored in the URL, an image gallery, and a lead-generation enquiry form with validation.
 
+**[Live demo](https://iliasjf.github.io/halden-estates/)**
+
 ## Getting started
 
 You need [Node.js](https://nodejs.org/) 20.19+ or 22.12+ (developed on Node 24) and [pnpm](https://pnpm.io/) (`npm install -g pnpm`).
