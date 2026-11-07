@@ -1,4 +1,5 @@
 # Halden Estates
+[![Checks](https://github.com/IliasJf/halden-estates/actions/workflows/ci.yml/badge.svg)](https://github.com/IliasJf/halden-estates/actions/workflows/ci.yml)
 
 A responsive real estate website for a fictional Portuguese agency, built with **React 19**, **TypeScript**, **React Router 7**, **Tailwind CSS 4**, **Leaflet** and **Vite**.
 
@@ -28,6 +29,7 @@ Then open the address Vite prints (usually http://localhost:5173).
 | `pnpm dev`       | Starts the development server with hot reload    |
 | `pnpm build`     | Type-checks, then builds the site into `dist/`   |
 | `pnpm typecheck` | Runs the TypeScript checker on its own         |
+| `pnpm test`      | Runs the tests (filters, sorting, listing data)  |
 | `pnpm preview`   | Serves the `dist/` build locally to check it     |
 
 On Windows PowerShell, if `pnpm` is blocked by the script execution policy, type `pnpm.cmd` instead.
